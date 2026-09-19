@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutrimind/core/route/const_route.dart';
 import 'package:nutrimind/feature/Auth/cubit/auth_cubit.dart';
+import 'package:nutrimind/feature/Auth/views/email_verification_page.dart';
 import 'package:nutrimind/feature/Auth/views/login_page_view.dart';
 import 'package:nutrimind/feature/Auth/views/register_page_view.dart';
 import 'package:nutrimind/feature/chat/views/chat_bot_view.dart';
@@ -9,6 +10,7 @@ import 'package:nutrimind/feature/details_meal/views/meal_details_view.dart';
 import 'package:nutrimind/feature/home/views/main_home_view.dart';
 import 'package:nutrimind/feature/model/home_model.dart';
 import 'package:nutrimind/feature/splash/splash_screen_view.dart';
+import 'package:nutrimind/feature/user/views/edit_profile_page.dart';
 
 GoRouter goRouter = GoRouter(
   initialLocation: RoutePath.splashPath,
@@ -35,6 +37,16 @@ GoRouter goRouter = GoRouter(
       ),
     ),
     GoRoute(
+      path: RoutePath.emailVerification,
+      name: RoutName.emailVerification,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (context) => AuthCubit(),
+          child: EmailVerificationPage(),
+        );
+      },
+    ),
+    GoRoute(
       path: RoutePath.chatBotPath,
       name: RoutName.chatBotName,
       builder: (context, state) => const ChatBotView(),
@@ -52,6 +64,12 @@ GoRouter goRouter = GoRouter(
         return MealDetailsView(meal: meal);
       },
     ),
-
+    GoRoute(
+      path: RoutePath.editProfilePath,
+      name: RoutName.editProfileName,
+      builder: (context, state) {
+        return EditProfilePage();
+      },
+    ),
   ],
 );

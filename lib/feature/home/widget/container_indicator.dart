@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/feature/home/widget/nutrition_progress.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -12,6 +14,10 @@ class ContainerIndicator extends StatelessWidget {
     required this.carbs,
     required this.fat,
     required this.meals,
+    required this.targetCalories,
+    required this.targetProtein,
+    required this.targetCarbs,
+    required this.targetFat,
   });
 
   final int calories;
@@ -19,20 +25,21 @@ class ContainerIndicator extends StatelessWidget {
   final int carbs;
   final int fat;
   final int meals;
-
-  static const int targetCalories = 2200;
-  static const int targetProtein = 95;
-  static const int targetCarbs = 300;
-  static const int targetFat = 70;
+  final int targetCalories;
+  final int targetProtein;
+  final int targetCarbs;
+  final int targetFat;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 200.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.r),
-        color: Colors.white,
-        boxShadow: [
+        borderRadius: BorderRadius.circular(16.r),
+        color:
+            Theme.of(context).cardTheme.color ??
+            Theme.of(context).colorScheme.surface,
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 10,
@@ -45,11 +52,14 @@ class ContainerIndicator extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("Daily Calories", style: AppStyle.black17w600),
+            child: Text(
+              "home.daily_calories".tr(),
+              style: AppStyle.black17w600,
+            ),
           ),
 
           Padding(
-            padding: const EdgeInsets.only(left: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -67,10 +77,10 @@ class ContainerIndicator extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text("/$targetCalories kcal"),
+                      Text("/$targetCalories ${"home.kcal".tr()}"),
                     ],
                   ),
-                  progressColor: Colors.green,
+                  progressColor: AppColor.greenColor,
                   backgroundColor: Colors.grey.shade300,
                   circularStrokeCap: CircularStrokeCap.round,
                 ),
@@ -81,24 +91,24 @@ class ContainerIndicator extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         NutritionProgress(
-                          title: "Protein",
+                          title: "home.protein".tr(),
                           value: protein,
-                          goal: 95,
-                          color: Colors.green,
+                          goal: targetProtein,
+                          color: AppColor.greenColor,
                         ),
 
                         NutritionProgress(
-                          title: "Carbs",
+                          title: "home.carbs".tr(),
                           value: carbs,
-                          goal: 300,
-                          color: Colors.blue,
+                          goal: targetCarbs,
+                          color: AppColor.blueColor,
                         ),
 
                         NutritionProgress(
-                          title: "Fat",
+                          title: "home.fat".tr(),
                           value: fat,
-                          goal: 70,
-                          color: Colors.orange,
+                          goal: targetFat,
+                          color: AppColor.accentColor,
                         ),
                       ],
                     ),

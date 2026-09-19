@@ -1,8 +1,7 @@
-import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutrimind/core/helper/sharhelper.dart';
 import 'package:nutrimind/feature/home/cubit/home_state.dart';
+import 'package:nutrimind/feature/model/change_target.dart';
 import 'package:nutrimind/feature/model/home_model.dart';
 import 'package:nutrimind/feature/services/firestor_services.dart';
 
@@ -13,75 +12,71 @@ class HomeCubit extends Cubit<HomeState> {
 
   final List<HomeModel> meals = [];
 
-  //==================== Load Meals ====================
+  int targetCalories = 2200;
+  int targetProtein = 95;
+  int targetCarbs = 300;
+  int targetFat = 70;
 
   void loadMeals(String uid) {
     emit(HomeLoading());
 
-    firestoreServices.getMeals(uid).listen((data) async {
-      final List<HomeModel> updatedMeals = [];
+    firestoreServices
+        .getMeals(uid)
+        .listen(
+          (data) {
+            meals
+              ..clear()
+              ..addAll(data);
 
-      for (final meal in data) {
-        final imagePath = await LocalImageService().getImage(meal.id!);
-
-        updatedMeals.add(
-          HomeModel(
-            id: meal.id,
-            image: imagePath != null ? File(imagePath) : null,
-            foodName: meal.foodName,
-            calories: meal.calories,
-            protein: meal.protein,
-            carbs: meal.carbs,
-            fat: meal.fat,
-            healthScore: meal.healthScore,
-            recommendation: meal.recommendation,
-            date: meal.date,
-          ),
+            emit(HomeLoaded(List.from(meals)));
+          },
+          onError: (error) {
+            emit(HomeFailure(error.toString()));
+          },
         );
-      }
-
-      meals
-        ..clear()
-        ..addAll(updatedMeals);
-
-      emit(HomeLoaded(updatedMeals));
-    });
   }
 
-  //==================== Delete Meal ====================
+  void loadTarget(String uid) {
+    firestoreServices
+        .getTarget(uid)
+        .listen(
+          (target) {
+            if (target == null) return;
 
-  Future<void> deleteMeal({
-    required String uid,
-    required String mealId,
-  }) async {
-    await firestoreServices.deleteMeal(
-      uid: uid,
-      mealId: mealId,
-    );
-
-    await LocalImageService().removeImage(mealId);
+            targetCalories = target.calories;
+            targetProtein = target.protein;
+            targetCarbs = target.carbs;
+            targetFat = target.fat;
+          },
+          onError: (error) {
+            emit(HomeFailure(error.toString()));
+          },
+        );
   }
 
-  //==================== Today's Statistics ====================
+
+  Future<void> deleteMeal({required String uid, required String mealId}) async {
+    await firestoreServices.deleteMeal(uid: uid, mealId: mealId);
+  }
+
+
 
   int get todayCalories => meals
       .where((e) => _isToday(e.date))
       .fold(0, (sum, e) => sum + e.calories);
 
-  int get todayProtein => meals
-      .where((e) => _isToday(e.date))
-      .fold(0, (sum, e) => sum + e.protein);
+  int get todayProtein =>
+      meals.where((e) => _isToday(e.date)).fold(0, (sum, e) => sum + e.protein);
 
-  int get todayCarbs => meals
-      .where((e) => _isToday(e.date))
-      .fold(0, (sum, e) => sum + e.carbs);
+  int get todayCarbs =>
+      meals.where((e) => _isToday(e.date)).fold(0, (sum, e) => sum + e.carbs);
 
-  int get todayFat => meals
-      .where((e) => _isToday(e.date))
-      .fold(0, (sum, e) => sum + e.fat);
+  int get todayFat =>
+      meals.where((e) => _isToday(e.date)).fold(0, (sum, e) => sum + e.fat);
 
-  int get todayMeals =>
-      meals.where((e) => _isToday(e.date)).length;
+  int get todayMeals => meals.where((e) => _isToday(e.date)).length;
+
+  
 
   bool _isToday(DateTime date) {
     final now = DateTime.now();
@@ -89,5 +84,29 @@ class HomeCubit extends Cubit<HomeState> {
     return date.year == now.year &&
         date.month == now.month &&
         date.day == now.day;
+  }
+
+ 
+
+  Future<void> updateDailyGoal(ChangeTarget target) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      emit(HomeFailure("User is not logged in"));
+      return;
+    }
+
+    try {
+      await firestoreServices.saveTarget(uId: user.uid, target: target);
+
+      targetCalories = target.calories;
+      targetProtein = target.protein;
+      targetCarbs = target.carbs;
+      targetFat = target.fat;
+
+      emit(Changetarge(changetarget: target));
+    } catch (e) {
+      emit(HomeFailure(e.toString()));
+    }
   }
 }

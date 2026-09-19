@@ -1,7 +1,13 @@
-import 'package:circle_nav_bar/circle_nav_bar.dart';
+import 'dart:ui' as ui;
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
+
 import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/feature/chat/views/chat_bot_view.dart';
 import 'package:nutrimind/feature/history/views/history_page_view.dart';
@@ -18,74 +24,70 @@ class MainHomeView extends StatefulWidget {
 
 class _MainHomeViewState extends State<MainHomeView> {
   int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<HomeCubit>().loadMeals(
-        FirebaseAuth.instance.currentUser!.uid,
-      );
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null && mounted) {
+        context.read<HomeCubit>().loadMeals(user.uid);
+        context.read<HomeCubit>().loadTarget(user.uid);
+      }
     });
   }
 
-  final List<Widget> pages = [
-    HomePageViews(),
-    ChatBotView(),
-    HistoryPageView(),
-    ProfilePageView(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      const HomePageViews(),
+      const ChatBotView(),
+      const HistoryPageView(),
+      const ProfilePageView(),
+    ];
+
     return Scaffold(
       body: pages[_currentIndex],
 
-      bottomNavigationBar: CircleNavBar(
-        activeIndex: _currentIndex,
+      bottomNavigationBar: Directionality(
+        textDirection: ui.TextDirection.ltr,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: AppColor.bottomnav,
+            borderRadius: BorderRadius.circular(25.r),
+          ),
+          child: SafeArea(
+            child: GNav(
+              key: ValueKey(context.locale.languageCode),
+              rippleColor: Colors.grey.shade300,
+              hoverColor: Colors.grey.shade100,
+              gap: 8,
+              activeColor: AppColor.whitColor,
+              iconSize: 24,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: const Duration(milliseconds: 200),
+              tabBackgroundColor: AppColor.primaryColor,
+              color: AppColor.greyColor,
+              selectedIndex: _currentIndex,
 
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+              tabs: [
+                GButton(icon: LineIcons.home, text: 'nav.home'.tr()),
+                GButton(icon: LineIcons.robot, text: 'nav.chat'.tr()),
+                GButton(icon: LineIcons.history, text: 'nav.history'.tr()),
+                GButton(icon: LineIcons.user, text: 'nav.profile'.tr()),
+              ],
 
-        activeIcons: const [
-          Icon(Icons.home, color: Colors.white),
-          Icon(Icons.support_agent, color: Colors.white),
-          Icon(Icons.history_outlined, color: Colors.white),
-          Icon(Icons.person, color: Colors.white),
-        ],
-
-        inactiveIcons: const [
-          Icon(Icons.home_outlined, color: Colors.white),
-          Icon(Icons.support_agent_outlined, color: Colors.white),
-          Icon(Icons.history, color: Colors.white),
-          Icon(Icons.person_outline, color: Colors.white),
-        ],
-
-        levels: const ["Home", "ChatBot", "History", "Profile"],
-
-        activeLevelsStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-
-        color: AppColor.primaryColor,
-        circleColor: Colors.orange,
-
-        height: 70,
-        circleWidth: 48,
-
-        shadowColor: Colors.black26,
-        circleShadowColor: Colors.black26,
-
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-
-        cornerRadius: const BorderRadius.only(
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
+              onTabChange: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
         ),
       ),
     );

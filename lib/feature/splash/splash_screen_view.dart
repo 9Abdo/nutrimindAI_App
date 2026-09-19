@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
+import 'package:nutrimind/core/constant/const_image.dart';
 import 'package:nutrimind/core/route/const_route.dart';
 
 class SplashPageView extends StatefulWidget {
@@ -34,8 +35,10 @@ class _SplashPageViewState extends State<SplashPageView> {
 
         if (!doc.exists) {
           await FirebaseAuth.instance.signOut();
+          if (!mounted) return;
           context.goNamed(RoutName.logiName);
         } else {
+          if (!mounted) return;
           context.goNamed(RoutName.mainhomeName);
         }
       }
@@ -45,7 +48,6 @@ class _SplashPageViewState extends State<SplashPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffFAFCF4),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -55,9 +57,7 @@ class _SplashPageViewState extends State<SplashPageView> {
               style: AppStyle.appBarStyle.copyWith(fontSize: 45.sp),
             ),
 
-            
-
-            Lottie.asset("assets/images/brainn.json"),
+            Lottie.asset(ConstImage.splashImage),
           ],
         ),
       ),

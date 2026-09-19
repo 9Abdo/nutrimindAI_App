@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
+import 'package:nutrimind/core/constant/app_style.dart';
 
 class NutritionProgress extends StatelessWidget {
   const NutritionProgress({
@@ -27,14 +29,11 @@ class NutritionProgress extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                title,
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-              ),
+              Text(title, style: AppStyle.font15w600),
               const Spacer(),
               Text(
-                "$value g / $goal g",
-                style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                "$value ${"home.g".tr()} / $goal ${"home.g".tr()}",
+                style: AppStyle.grey13,
               ),
             ],
           ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 
 class NutritionRow extends StatelessWidget {
-  const NutritionRow(this.title, this.value);
+  const NutritionRow(this.title, this.value, {super.key});
 
   final String title;
   final String value;
@@ -12,10 +12,7 @@ class NutritionRow extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text(title),
-        trailing: Text(
-          value,
-          style: AppStyle.green16w500,
-        ),
+        trailing: Text(value, style: AppStyle.green16w500),
       ),
     );
   }

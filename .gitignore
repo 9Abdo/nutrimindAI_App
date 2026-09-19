@@ -32,7 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
-
+lib/core/constant/const_api.dart
 # Symbolication related
 app.*.symbols
 

@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
+import 'package:nutrimind/core/constant/const_image.dart';
 import 'package:nutrimind/core/helper/showsnackbar.dart';
 import 'package:nutrimind/core/route/const_route.dart';
 import 'package:nutrimind/core/widgets/custom_button.dart';
@@ -29,10 +32,18 @@ class _LoginPageViewState extends State<LoginPageView> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginFailure) {
-          showSankBar(context, text: state.error, color: Colors.red);
+          showSankBar(
+            context,
+            text: state.error.tr(),
+            color: AppColor.redColor,
+          );
         }
         if (state is LoginSuccess) {
-          showSankBar(context, text: "Login SuccessFul", color: Colors.green);
+          showSankBar(
+            context,
+            text: "auth.login_successful".tr(),
+            color: AppColor.greenColor,
+          );
           context.pushReplacementNamed(RoutName.mainhomeName);
         }
       },
@@ -41,123 +52,162 @@ class _LoginPageViewState extends State<LoginPageView> {
           inAsyncCall: state is LoginLoading,
           child: SafeArea(
             child: Scaffold(
-              backgroundColor: Color(0xffFAFCF4),
               body: Center(
                 child: Padding(
                   padding: EdgeInsets.all(16.sp),
                   child: Form(
                     key: formkey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 20.h),
-                          Text(
-                            "NutriMind",
-                            style: AppStyle.appBarStyle.copyWith(
-                              fontSize: 48.sp,
+                    child: LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight,
                             ),
-                          ),
-                          Text("Smart Analysis , Healthier You."),
-                          SizedBox(height: 16.h),
-                          Image.asset(
-                            "assets/images/vigatble.png",
-                            width: MediaQuery.of(context).size.width * .75,
-                            height: 140.h,
-                            fit: BoxFit.fill,
-                          ),
-                          Text(
-                            "Welcome Back!",
-                            style: TextStyle(
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "Login to Continue your healthy journey",
-                            style: AppStyle.grey16,
-                          ),
-                          SizedBox(height: 12.h),
-                          CustomTextField(
-                            controller: emailcontoller,
-                            hint: "Email",
-                            prefixicon: Icon(Icons.email),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Email is required";
-                              }
-                              if (!value.endsWith("@gmail.com")) {
-                                return "Email must end with @gmail.com";
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 8.h),
-                          CustomTextField(
-                            controller: passwordcontoller,
-                            hint: "PassWord",
-                            prefixicon: Icon(Icons.lock),
-                            obscureText: obscuretext,
-                            icon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  obscuretext = !obscuretext;
-                                });
-                              },
-                              icon: obscuretext
-                                  ? Icon(Icons.visibility_off)
-                                  : Icon(Icons.visibility),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Password is required";
-                              }
-                              if (value.length < 8) {
-                                return "Password must be at least 8 characters";
-                              }
-                              if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                return "Password must contain an uppercase letter";
-                              }
-                              if (!RegExp(r'[a-z]').hasMatch(value)) {
-                                return "Password must contain a lowercase letter";
-                              }
-                              return null;
-                            },
-                          ),
+                            child: IntrinsicHeight(
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  Text(
+                                    "app_name".tr(),
+                                    style: AppStyle.appBarStyle.copyWith(
+                                      fontSize: 48.sp,
+                                    ),
+                                  ),
+                                  Text("app_tagline".tr()),
+                                  SizedBox(height: 16.h),
+                                  Image.asset(
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? ConstImage.darkLogin
+                                        : ConstImage.lightLogin,
+                                    width:
+                                        MediaQuery.of(context).size.width * .9,
+                                    height: 140.h,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  Text(
+                                    "auth.welcome_back".tr(),
+                                    style: AppStyle.font24w700
+                                  ),
+                                  Text(
+                                    "auth.login_subtitle".tr(),
+                                    style: AppStyle.grey16,
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  CustomTextField(
+                                    controller: emailcontoller,
+                                    hint: "auth.email".tr(),
+                                    prefixicon: const Icon(Icons.email),
+                                    validator: (value) {
+                                      if (value == null ||
+                                          value.trim().isEmpty) {
+                                        return "auth.validation.email_required"
+                                            .tr();
+                                      }
 
-                          Align(
-                            alignment: AlignmentGeometry.topRight,
-                            child: Text(
-                              "Forget Password?",
-                              style: AppStyle.green16w500,
+                                      final emailRegex = RegExp(
+                                        r'^[\w\.-]+@[\w\.-]+\.\w+$',
+                                      );
+
+                                      if (!emailRegex.hasMatch(value.trim())) {
+                                        return "auth.validation.email_invalid"
+                                            .tr();
+                                      }
+
+                                      return null;
+                                    },
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  CustomTextField(
+                                    controller: passwordcontoller,
+                                    hint: "auth.password".tr(),
+                                    prefixicon: const Icon(Icons.lock),
+                                    obscureText: obscuretext,
+                                    icon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          obscuretext = !obscuretext;
+                                        });
+                                      },
+                                      icon: obscuretext
+                                          ? const Icon(Icons.visibility_off)
+                                          : const Icon(Icons.visibility),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "auth.validation.password_required"
+                                            .tr();
+                                      }
+
+                                      if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                                        return "auth.validation.password_uppercase"
+                                            .tr();
+                                      }
+
+                                      if (!RegExp(r'[a-z]').hasMatch(value)) {
+                                        return "auth.validation.password_lowercase"
+                                            .tr();
+                                      }
+
+                                      if (!RegExp(r'[0-9]').hasMatch(value)) {
+                                        return "auth.validation.password_number"
+                                            .tr();
+                                      }
+
+                                      if (value.length < 8) {
+                                        return "auth.validation.password_min_length"
+                                            .tr();
+                                      }
+
+                                      if (!RegExp(
+                                        r'[!@#$%^&*(),.?":{}|<>_\-+=/\\[\]~`]',
+                                      ).hasMatch(value)) {
+                                        return "auth.validation.password_special_character"
+                                            .tr();
+                                      }
+
+                                      return null;
+                                    },
+                                  ),
+
+                                  Align(
+                                    alignment: AlignmentDirectional.topEnd,
+                                    child: Text(
+                                      "auth.forgot_password".tr(),
+                                      style: AppStyle.green16w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Custombutton(
+                                    buttonName: "auth.login".tr(),
+                                    onPressed: () {
+                                      if (formkey.currentState!.validate()) {
+                                        context.read<AuthCubit>().login(
+                                          email: emailcontoller.text,
+                                          password: passwordcontoller.text,
+                                        );
+                                      }
+                                    },
+                                    height: 40.h,
+                                  ),
+                                  Spacer(),
+                                  RowAuth(
+                                    beforetext: "auth.dont_have_account".tr(),
+                                    button: "auth.sign_up".tr(),
+                                    onTap: () {
+                                      context.pushReplacementNamed(
+                                        RoutName.registerName,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 20.h),
+                                ],
+                              ),
                             ),
                           ),
-                          SizedBox(height: 10.h),
-                          Custombutton(
-                            buttonName: "Log in",
-                            onPressed: () {
-                              if (formkey.currentState!.validate()) {
-                                context.read<AuthCubit>().login(
-                                  email: emailcontoller.text,
-                                  password: passwordcontoller.text,
-                                );
-                              }
-                            },
-                            height: 40.h,
-                          ),
-                          SizedBox(height: 70.h),
-                          RowAuth(
-                            beforetext: "Don't have an account? ",
-                            button: "Sign up",
-                            onTap: () {
-                              context.pushReplacementNamed(
-                                RoutName.registerName,
-                              );
-                            },
-                          ),
-                          SizedBox(height: 10.h),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ),

@@ -5,13 +5,17 @@ class RoutePath {
   static const String chatBotPath = "/chatBotPath";
   static const String splashPath = "/splashPath";
   static const String mealDatailPath = "/mealDatailPath";
+  static const String emailVerification = "/emailVerification";
+  static const String editProfilePath = "/editProfilePath";
 }
 
 class RoutName {
   static const String mainhomeName = "mainHome";
   static const String logiName = "loginName";
-  static const String registerName="registerPath";
+  static const String registerName = "registerPath";
   static const String chatBotName = "chatBotName";
   static const String splashName = "splashName";
   static const String mealDatailName = "mealDatailName";
+  static const String emailVerification = "emailVerification";
+   static const String editProfileName = "/editProfileName";
 }

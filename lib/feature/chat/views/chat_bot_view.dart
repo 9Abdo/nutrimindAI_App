@@ -1,14 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
+import 'package:nutrimind/core/helper/showsnackbar.dart';
 import 'package:nutrimind/feature/chat/cubit/chat_bot_cubit.dart';
 import 'package:nutrimind/feature/chat/cubit/chat_bot_state.dart';
 import 'package:nutrimind/feature/chat/widget/chat_buble.dart';
 import 'package:nutrimind/feature/chat/widget/image_before_send.dart';
 import 'package:nutrimind/feature/chat/widget/loading_analysis.dart';
-
 import 'package:nutrimind/feature/chat/widget/showbottom.dart';
 
 class ChatBotView extends StatefulWidget {
@@ -21,8 +23,11 @@ class ChatBotView extends StatefulWidget {
 class _ChatBotViewState extends State<ChatBotView> {
   final TextEditingController messageController = TextEditingController();
   final ScrollController scrollController = ScrollController();
+
   void scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
       if (scrollController.hasClients) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
@@ -35,53 +40,71 @@ class _ChatBotViewState extends State<ChatBotView> {
 
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
       context.read<ChatBotCubit>().sendWelcomeMessage();
       scrollToBottom();
     });
+  }
 
-    super.initState();
+  @override
+  void dispose() {
+    messageController.dispose();
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chat NutriMind", style: AppStyle.appBarStyle),
+        title: Text("chat.title".tr(), style: AppStyle.appBarStyle),
         centerTitle: true,
       ),
+
       body: Padding(
         padding: EdgeInsets.all(12.sp),
         child: Column(
           children: [
             SizedBox(height: 20.h),
 
-            /// Messages
             Expanded(
               child: BlocConsumer<ChatBotCubit, ChatBotState>(
                 listener: (context, state) {
                   if (state is ChatBotFailure) {
-                    ScaffoldMessenger.of(
+                    showSankBar(
                       context,
-                    ).showSnackBar(SnackBar(content: Text(state.errMessage)));
+                      text: state.errMessage,
+                      color: AppColor.redColor,
+                    );
                   }
 
                   scrollToBottom();
                 },
+
                 builder: (context, state) {
                   final cubit = context.read<ChatBotCubit>();
 
+                  final messages = state is ChatBotSuccess
+                      ? state.message
+                      : cubit.messages;
+
                   return ListView.builder(
                     controller: scrollController,
-                    itemCount: cubit.messages.length + (cubit.isTyping ? 1 : 0),
+
+                    itemCount: messages.length + (cubit.isTyping ? 1 : 0),
+
                     itemBuilder: (context, index) {
-                      if (cubit.isTyping && index == cubit.messages.length) {
+                      if (cubit.isTyping && index == messages.length) {
                         return const LoadingBubble();
                       }
 
                       return Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: ChatBuble(chatMessage: cubit.messages[index]),
+                        padding: EdgeInsets.all(2.w),
+                        child: ChatBuble(chatMessage: messages[index]),
                       );
                     },
                   );
@@ -91,7 +114,6 @@ class _ChatBotViewState extends State<ChatBotView> {
 
             SizedBox(height: 8.h),
 
-            ///================= Image + TextField
             BlocBuilder<ChatBotCubit, ChatBotState>(
               builder: (context, state) {
                 final cubit = context.read<ChatBotCubit>();
@@ -109,8 +131,9 @@ class _ChatBotViewState extends State<ChatBotView> {
 
                     TextFormField(
                       controller: messageController,
+
                       decoration: InputDecoration(
-                        hintText: "Type a message...",
+                        hintText: "chat.type_message".tr(),
 
                         prefixIcon: IconButton(
                           icon: Icon(Icons.add, size: 26.sp),
@@ -139,6 +162,7 @@ class _ChatBotViewState extends State<ChatBotView> {
                                     cubit.sendImage(
                                       cubit.selectedImage!,
                                       message: text,
+                                      language: context.locale.languageCode,
                                     );
 
                                     cubit.removeSelectedImage();
@@ -148,6 +172,7 @@ class _ChatBotViewState extends State<ChatBotView> {
 
                                   messageController.clear();
                                 },
+
                           icon: Icon(
                             Icons.send,
                             color: AppColor.primaryColor,
@@ -158,6 +183,7 @@ class _ChatBotViewState extends State<ChatBotView> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.r),
                         ),
+
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.r),
                         ),

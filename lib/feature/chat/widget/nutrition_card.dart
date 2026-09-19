@@ -1,14 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_color.dart';
+import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/feature/chat/widget/nutrition_item.dart';
 import 'package:nutrimind/feature/model/chat_bot_model.dart';
 
 class NutritionCard extends StatelessWidget {
-  const NutritionCard({
-    super.key,
-    required this.model,
-  });
+  const NutritionCard({super.key, required this.model});
 
   final ChatBotModel model;
 
@@ -18,17 +17,13 @@ class NutritionCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color:
+            Theme.of(context).cardTheme.color ??
+            Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18.r),
-        border: Border.all(
-          color: AppColor.primaryColor.withOpacity(.25),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
+        border: Border.all(color: AppColor.primaryColor.withValues(alpha: .25)),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 3)),
         ],
       ),
       child: Column(
@@ -36,19 +31,10 @@ class NutritionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.restaurant_menu,
-                color: AppColor.primaryColor,
-              ),
+              Icon(Icons.restaurant_menu, color: AppColor.primaryColor),
               SizedBox(width: 8.w),
               Expanded(
-                child: Text(
-                  model.foodName ?? "",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: Text(model.foodName ?? "", style: AppStyle.font18bold),
               ),
             ],
           ),
@@ -57,37 +43,31 @@ class NutritionCard extends StatelessWidget {
 
           NutritionItem(
             icon: Icons.local_fire_department,
-            title: "Calories",
-            value: "${model.calories} kcal",
+            title: "chat.calories".tr(),
+            value: "${model.calories} ${"home.kcal".tr()}",
           ),
 
           NutritionItem(
             icon: Icons.fitness_center,
-            title: "Protein",
-            value: "${model.protein} g",
+            title: "chat.protein".tr(),
+            value: "${model.protein} ${"home.g".tr()}",
           ),
 
           NutritionItem(
             icon: Icons.rice_bowl,
-            title: "Carbs",
-            value: "${model.carbs} g",
+            title: "chat.carbs".tr(),
+            value: "${model.carbs} ${"home.g".tr()}",
           ),
 
           NutritionItem(
             icon: Icons.opacity,
-            title: "Fat",
-            value: "${model.fat} g",
+            title: "chat.fat".tr(),
+            value: "${model.fat} ${"home.g".tr()}",
           ),
 
           SizedBox(height: 12.h),
 
-          Text(
-            "Health Score",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 15.sp,
-            ),
-          ),
+          Text("chat.health_score".tr(), style: AppStyle.font15bold),
 
           SizedBox(height: 6.h),
 
@@ -116,19 +96,12 @@ class NutritionCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.tips_and_updates,
-                color: Colors.amber,
-                size: 22.sp,
-              ),
+              Icon(Icons.tips_and_updates, color: Colors.amber, size: 22.sp),
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
                   model.recommendation ?? "",
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    height: 1.5,
-                  ),
+                  style: TextStyle(fontSize: 14.sp, height: 1.5),
                 ),
               ),
             ],
@@ -138,4 +111,3 @@ class NutritionCard extends StatelessWidget {
     );
   }
 }
-

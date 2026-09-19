@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nutrimind/core/constant/app_color.dart';
+
+import 'package:nutrimind/core/constant/app_style.dart';
 
 class InfoCard extends StatelessWidget {
   const InfoCard({
+    super.key,
     required this.title,
     required this.value,
     required this.unit,
@@ -19,14 +21,7 @@ class InfoCard extends StatelessWidget {
       children: [
         Text(title),
         SizedBox(height: 8.h),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColor.primaryColor,
-          ),
-        ),
+        Text(value, style: AppStyle.appBarStyle),
         Text(unit),
       ],
     );

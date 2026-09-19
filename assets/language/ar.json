@@ -1,0 +1,189 @@
+{
+  "app_name": "نيوتري مايند",
+  "app_tagline": "تحليل ذكي، لصحة أفضل.",
+
+ "auth": {
+  "welcome_back": "مرحبًا بعودتك!",
+  "login_subtitle": "سجل الدخول لمتابعة رحلتك الصحية",
+  "login": "تسجيل الدخول",
+  "sign_up": "إنشاء حساب",
+  "create_account": "إنشاء حساب",
+  "signup_subtitle": "ابدأ نمط حياتك الصحي مع NutriMind",
+  "full_name": "الاسم الكامل",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "confirm_password": "تأكيد كلمة المرور",
+  "forgot_password": "هل نسيت كلمة المرور؟",
+  "dont_have_account": "ليس لديك حساب؟ ",
+  "already_have_account": "لديك حساب بالفعل؟",
+  "login_successful": "تم تسجيل الدخول بنجاح",
+  "account_created_successfully": "تم إنشاء الحساب بنجاح",
+  "verification_email_sent": "تم إرسال رسالة التحقق. يرجى التحقق من بريدك الإلكتروني.",
+  "verification_email_failed": "فشل إرسال رسالة التحقق.",
+  "email_verified": "تم التحقق من البريد الإلكتروني بنجاح.",
+  "email_not_verified": "لم يتم التحقق من بريدك الإلكتروني بعد.",
+  "verify_email_title": "تحقق من بريدك الإلكتروني",
+  "verify_email_description": "تم إرسال رابط التحقق إلى {email}. يرجى التحقق من بريدك الإلكتروني قبل المتابعة.",
+  "check_verification": "لقد تحققت من بريدي الإلكتروني",
+  "checking": "جاري التحقق...",
+  "resend_verification": "إعادة إرسال رسالة التحقق",
+  "sending": "جاري الإرسال...",
+  "logout": "تسجيل الخروج",
+
+  "errors": {
+    "user_not_logged_in": "المستخدم غير مسجل الدخول",
+    "user_email_not_found": "لم يتم العثور على البريد الإلكتروني للمستخدم",
+    "user_data_not_found": "لم يتم العثور على بيانات المستخدم",
+    "old_password_incorrect": "كلمة المرور الحالية غير صحيحة",
+    "new_password_weak": "كلمة المرور الجديدة ضعيفة",
+    "recent_login_required": "يرجى تسجيل الدخول مرة أخرى",
+    "password_change_failed": "فشل تغيير كلمة المرور",
+    "invalid_credential": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+      "user_not_found": "لم يتم العثور على حساب بهذا البريد الإلكتروني",
+      "wrong_password": "كلمة المرور غير صحيحة",
+      "invalid_email": "عنوان البريد الإلكتروني غير صحيح",
+      "weak_password": "كلمة المرور المدخلة ضعيفة جداً",
+      "email_already_in_use": "البريد الإلكتروني مستخدم بالفعل",
+      "email_not_verified": "يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول",
+      "login_failed": "فشل تسجيل الدخول",
+      "signup_failed": "فشل إنشاء الحساب"
+  },
+
+  "validation": {
+    "name_required": "الاسم الكامل مطلوب",
+    "name_min_length": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
+    "name_no_numbers": "لا يمكن أن يحتوي الاسم الكامل على أرقام",
+
+    "email_required": "البريد الإلكتروني مطلوب",
+    "email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
+
+    "password_required": "كلمة المرور مطلوبة",
+    "password_uppercase": "أضف حرفًا كبيرًا واحدًا على الأقل",
+    "password_lowercase": "أضف حرفًا صغيرًا واحدًا على الأقل",
+    "password_number": "أضف رقمًا واحدًا على الأقل",
+    "password_min_length": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "password_special_character": "أضف رمزًا خاصًا واحدًا على الأقل مثل @#&*$",
+
+    "confirm_password_required": "تأكيد كلمة المرور مطلوب",
+    "passwords_do_not_match": "كلمتا المرور غير متطابقتين"
+  }
+},
+
+  "home": {
+    "hello": "مرحباً",
+    "subtitle": "دعنا نتخذ خيارات صحية أفضل اليوم!",
+    "daily_calories": "السعرات اليومية",
+    "kcal": "سعرة",
+    "g": "جم",
+    "protein": "البروتين",
+    "carbs": "الكربوهيدرات",
+    "fat": "الدهون",
+    "meals": "الوجبات",
+    "recent_analysis": "آخر التحليلات",
+    "see_all": "عرض الكل",
+    "no_analysis_title": "لا يوجد تحليلات بعد",
+    "no_analysis_desc": "قم بتحليل وجبتك الأولى\nلتظهر هنا.",
+    "ask_ai_title": "اسأل نيوتري مايند الذكي",
+    "ask_ai_subtitle": "ما هي مكونات وجبتي؟",
+    "start_chat": "ابدأ المحادثة",
+  
+     "delete_meal": "حذف الوجبة",
+    "delete_meal_confirm": "هل أنت متأكد أنك تريد حذف هذه الوجبة؟",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "meal_deleted_successfully": "تم حذف الوجبة بنجاح"
+  },
+
+  "nav": {
+    "home": "الرئيسية",
+    "chat": "المساعد الذكي",
+    "history": "السجل",
+    "profile": "الملف الشخصي"
+  },
+
+  "chat": {
+      "welcome": "👋 مرحبًا!\nكيف يمكنني مساعدتك في\nتغذيتك اليوم؟",
+    "title": "محادثة نيوتري مايند",
+    "type_message": "اكتب رسالة...",
+    "camera": "الكاميرا",
+    "gallery": "المعرض",
+    "send": "إرسال",
+    "analyzing": "جاري تحليل الوجبة...",
+    "health_score": "التقييم الصحي",
+    "recommendation": "التوصية",
+    "calories": "السعرات",
+    "protein": "البروتين",
+    "carbs": "الكربوهيدرات",
+    "fat": "الدهون"
+  },
+
+  "details": {
+    "title": "تفاصيل الوجبة",
+    "health": "الصحة",
+    "nutrition": "العناصر الغذائية",
+    "recommendation": "التوصية",
+    "calories": "السعرات",
+    "protein": "البروتين",
+    "carbs": "الكربوهيدرات",
+    "fat": "الدهون",
+    "date": "التاريخ"
+  },
+
+  "history": {
+    "title": "السجل",
+    "no_history_title": "لا يوجد تحليلات بعد",
+    "no_history_desc": "قم بتحليل وجبتك الأولى\nلتظهر هنا."
+  },
+
+  "profile": {
+    "title": "الملف الشخصي",
+    "personal_info": "المعلومات الشخصية",
+    "daily_goal": "الهدف اليومي",
+    "analysis_history": "سجل التحليلات",
+    "settings": "الإعدادات",
+    "language": "اللغة",
+    "arabic": "العربية",
+    "english": "الإنجليزية",
+    "theme": "المظهر",
+    "dark_mode": "الوضع الليلي",
+    "light_mode": "الوضع الفاتح",
+    "system_mode": "تلقائي حسب النظام",
+    "logout": "تسجيل الخروج",
+    "logout_dialog_title": "تسجيل الخروج",
+    "logout_dialog_desc": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "cancel": "إلغاء",
+     "setting_daily":"تحديد هدف يومي",
+     "save":"حفظ",
+     "edit_profile":"تعديل الملف الشخصي",
+     "personal_information":"معلومات شخصية",
+     "change_pass":"تغير الباسورد",
+     "message_change":"أدخل كلمة المرور الحالية واختر كلمة مرور جديدة.",
+     "current_pass":"كلمة المرور الحالية",
+     "new_pass":"كلمة المرور الجديدة",
+     "password_changed_successfully": "تم تغيير كلمة المرور بنجاح",
+    "password_must_be_different": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور الحالية",
+    "name_updated_successfully": "تم تحديث الاسم بنجاح",
+    "update_successful":"تم التحديث بنجاح",
+
+  "errors": {
+    "name_update_failed": "فشل تحديث الاسم"
+  }
+  },
+
+  "common": {
+    "ok": "حسناً",
+    "cancel": "إلغاء",
+    "error": "خطأ",
+    "success": "نجاح",
+    "loading": "جاري التحميل...",
+    "retry": "إعادة المحاولة",
+    "save": "حفظ"
+  },
+  
+  "date": {
+    "today": "اليوم",
+    "yesterday": "أمس"
+  }
+
+}
+

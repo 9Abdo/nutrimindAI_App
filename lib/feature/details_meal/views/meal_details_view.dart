@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_color.dart';
@@ -15,7 +16,7 @@ class MealDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Meal Details")),
+      appBar: AppBar(title: Text("details.title".tr())),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(18.sp),
         child: Column(
@@ -23,12 +24,35 @@ class MealDetailsView extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20.r),
-              child: meal.image != null
-                  ? Image.file(
+              child: meal.image != null && meal.image!.isNotEmpty
+                  ? Image.network(
                       meal.image!,
                       width: double.infinity,
                       height: 220.h,
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          height: 220.h,
+                          width: double.infinity,
+                          color: Colors.grey.shade200,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 220.h,
+                          width: double.infinity,
+                          color: Colors.grey.shade200,
+                          child: Icon(
+                            Icons.fastfood,
+                            size: 90.sp,
+                            color: AppColor.greyColor,
+                          ),
+                        );
+                      },
                     )
                   : Container(
                       height: 220.h,
@@ -48,7 +72,13 @@ class MealDetailsView extends StatelessWidget {
 
             SizedBox(height: 5.h),
 
-            Text(formatAnalysisDate(meal.date), style: AppStyle.grey16),
+            Text(
+              DateFormatHelper.formatAnalysisDate(
+                meal.date,
+                locale: context.locale.languageCode,
+              ),
+              style: AppStyle.grey16,
+            ),
 
             SizedBox(height: 20.h),
 
@@ -59,12 +89,12 @@ class MealDetailsView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     InfoCard(
-                      title: "Calories",
+                      title: "details.calories".tr(),
                       value: "${meal.calories}",
-                      unit: "Kcal",
+                      unit: "home.kcal".tr(),
                     ),
                     InfoCard(
-                      title: "Health",
+                      title: "details.health".tr(),
                       value: "${meal.healthScore}",
                       unit: "/10",
                     ),
@@ -75,17 +105,23 @@ class MealDetailsView extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            Text("Nutrition", style: AppStyle.black17w600),
+            Text("details.nutrition".tr(), style: AppStyle.black17w600),
 
             SizedBox(height: 10.h),
 
-            NutritionRow("Protein", "${meal.protein} g"),
-            NutritionRow("Carbs", "${meal.carbs} g"),
-            NutritionRow("Fat", "${meal.fat} g"),
+            NutritionRow(
+              "details.protein".tr(),
+              "${meal.protein} ${"home.g".tr()}",
+            ),
+            NutritionRow(
+              "details.carbs".tr(),
+              "${meal.carbs} ${"home.g".tr()}",
+            ),
+            NutritionRow("details.fat".tr(), "${meal.fat} ${"home.g".tr()}"),
 
             SizedBox(height: 25.h),
 
-            Text("Recommendation", style: AppStyle.black17w600),
+            Text("details.recommendation".tr(), style: AppStyle.black17w600),
 
             SizedBox(height: 10.h),
 
@@ -93,10 +129,17 @@ class MealDetailsView extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.all(16.sp),
               decoration: BoxDecoration(
-                color: AppColor.primaryColor.withOpacity(.08),
+                color: AppColor.primaryColor.withValues(alpha: .12),
                 borderRadius: BorderRadius.circular(15.r),
               ),
-              child: Text(meal.recommendation, style: AppStyle.black16),
+              child: Text(
+                meal.recommendation,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 15.sp,
+                  height: 1.5,
+                ),
+              ),
             ),
           ],
         ),
@@ -104,5 +147,3 @@ class MealDetailsView extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutrimind/core/helper/sharhelper.dart';
 import 'package:nutrimind/feature/chat/cubit/chat_bot_state.dart';
 import 'package:nutrimind/feature/home/cubit/home_cubit.dart';
 import 'package:nutrimind/feature/model/chat_bot_model.dart';
@@ -11,11 +11,16 @@ import 'package:nutrimind/feature/model/home_model.dart';
 import 'package:nutrimind/feature/services/chat_bot_services.dart';
 import 'package:nutrimind/feature/services/firestor_services.dart';
 import 'package:nutrimind/feature/services/image_picker_services.dart';
+import 'package:nutrimind/feature/services/supbase_services.dart';
 
 class ChatBotCubit extends Cubit<ChatBotState> {
   final ChatBotServices chatBotServices;
   final HomeCubit homeCubit;
+
   final ImagePickerService imagePickerService = ImagePickerService();
+
+  final SupabaseStorageService supabaseStorageService =
+      SupabaseStorageService();
 
   ChatBotCubit(this.chatBotServices, this.homeCubit) : super(ChatBotInitial());
 
@@ -25,17 +30,12 @@ class ChatBotCubit extends Cubit<ChatBotState> {
 
   bool isTyping = false;
 
-  //================== Welcome ==================
-
   void sendWelcomeMessage() {
     if (messages.isNotEmpty) return;
 
     messages.add(
       ChatMessage(
-        text:
-            "👋 Hello!\n"
-            "How can I help you with your\n"
-            "nutrition today?\n",
+        text: "chat.welcome".tr(),
         isUser: false,
         time: DateTime.now(),
       ),
@@ -44,7 +44,22 @@ class ChatBotCubit extends Cubit<ChatBotState> {
     emit(ChatBotSuccess(message: List.from(messages)));
   }
 
-  //================== Text ==================
+  void refreshWelcomeMessage() {
+    if (messages.isEmpty) {
+      sendWelcomeMessage();
+      return;
+    }
+
+    final welcomeMessage = ChatMessage(
+      text: "chat.welcome".tr(),
+      isUser: false,
+      time: messages.first.time,
+    );
+
+    messages[0] = welcomeMessage;
+
+    emit(ChatBotSuccess(message: List.from(messages)));
+  }
 
   Future<void> sendMessage(String message) async {
     try {
@@ -66,14 +81,23 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       emit(ChatBotSuccess(message: List.from(messages)));
     } catch (e) {
       isTyping = false;
+
       emit(ChatBotFailure(errMessage: e.toString()));
     }
   }
 
-  //================== Image ==================
-
-  Future<void> sendImage(File image, {String? message}) async {
+  Future<void> sendImage(
+    File image, {
+    String? message,
+    required String language,
+  }) async {
     try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        throw Exception("User is not logged in");
+      }
+
       messages.add(
         ChatMessage(
           image: image,
@@ -91,6 +115,12 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       final ChatBotModel response = await chatBotServices.sendImage(
         image,
         message: message,
+        language: language,
+      );
+
+      final String imageUrl = await supabaseStorageService.uploadMealImage(
+        image: image,
+        uid: user.uid,
       );
 
       isTyping = false;
@@ -99,11 +129,11 @@ class ChatBotCubit extends Cubit<ChatBotState> {
         ChatMessage(nutrition: response, isUser: false, time: DateTime.now()),
       );
 
-      final mealId = await FirestoreServices().saveMeal(
-        uid: FirebaseAuth.instance.currentUser!.uid,
+      await FirestoreServices().saveMeal(
+        uid: user.uid,
         meal: HomeModel(
           id: "",
-          image: null,
+          image: imageUrl,
           foodName: response.foodName ?? "",
           calories: response.calories ?? 0,
           protein: response.protein ?? 0,
@@ -115,11 +145,7 @@ class ChatBotCubit extends Cubit<ChatBotState> {
         ),
       );
 
-      await LocalImageService().saveImage(
-        mealId: mealId,
-        imagePath: image.path,
-      );
-      homeCubit.loadMeals(FirebaseAuth.instance.currentUser!.uid);
+      homeCubit.loadMeals(user.uid);
 
       if ((message?.trim().isNotEmpty ?? false) &&
           response.reply.trim().isNotEmpty) {
@@ -135,11 +161,10 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       emit(ChatBotSuccess(message: List.from(messages)));
     } catch (e) {
       isTyping = false;
+
       emit(ChatBotFailure(errMessage: e.toString()));
     }
   }
-
-  //================== Pick Image ==================
 
   Future<void> pickImageFromGallery() async {
     final File? image = await imagePickerService.pickFromGallery();
@@ -147,6 +172,7 @@ class ChatBotCubit extends Cubit<ChatBotState> {
     if (image == null) return;
 
     selectedImage = image;
+
     emit(ChatBotSuccess(message: List.from(messages)));
   }
 
@@ -156,13 +182,13 @@ class ChatBotCubit extends Cubit<ChatBotState> {
     if (image == null) return;
 
     selectedImage = image;
+
     emit(ChatBotSuccess(message: List.from(messages)));
   }
 
-  //================== Remove Image ==================
-
   void removeSelectedImage() {
     selectedImage = null;
+
     emit(ChatBotSuccess(message: List.from(messages)));
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nutrimind/core/constant/app_color.dart';
 
 class ImageBeforeSend extends StatelessWidget {
   const ImageBeforeSend({super.key, required this.file, this.onPressed});
@@ -25,11 +26,11 @@ class ImageBeforeSend extends StatelessWidget {
           right: 4,
           child: CircleAvatar(
             radius: 14.r,
-            backgroundColor: Colors.red,
+            backgroundColor: AppColor.redColor,
             child: IconButton(
               padding: EdgeInsets.zero,
-              icon: Icon(Icons.close, color: Colors.white, size: 16),
-              onPressed: onPressed
+              icon: Icon(Icons.close, color: AppColor.whitColor, size: 16),
+              onPressed: onPressed,
             ),
           ),
         ),

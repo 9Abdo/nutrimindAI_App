@@ -1,9 +1,6 @@
-import 'dart:io';
-
-
 class HomeModel {
   final String? id;
-  final File? image;
+  final String? image;
   final String foodName;
   final int calories;
   final int protein;
@@ -15,8 +12,7 @@ class HomeModel {
 
   HomeModel({
     this.id,
-    
-    required this.image,
+    this.image,
     required this.foodName,
     required this.calories,
     required this.protein,

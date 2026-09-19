@@ -1,6 +1,7 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nutrimind/core/constant/app_style.dart';
 
 void showSankBar(
   BuildContext context, {
@@ -9,7 +10,7 @@ void showSankBar(
 }) {
   AnimatedSnackBar(
     mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-    duration: Duration(milliseconds: 1500),
+    duration: Duration(milliseconds: 2000),
     builder: (context) {
       return Container(
         width: double.infinity,
@@ -17,16 +18,7 @@ void showSankBar(
         padding: const EdgeInsets.all(8),
 
         color: color,
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        child: Center(child: Text(text, style: AppStyle.showSnackBar)),
       );
     },
   ).show(context);

@@ -1,24 +1,52 @@
-import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
-String formatAnalysisDate(DateTime date) {
-  final now = DateTime.now();
+class DateFormatHelper {
+  static String formatAnalysisDate(
+    DateTime date, {
+    BuildContext? context,
+    String? locale,
+  }) {
+    final now = DateTime.now();
 
-  final today = DateTime(now.year, now.month, now.day);
-  final analysis = DateTime(date.year, date.month, date.day);
+    final today = DateTime(now.year, now.month, now.day);
 
-  final difference = today.difference(analysis).inDays;
+    final analysis = DateTime(date.year, date.month, date.day);
 
-  if (difference == 0) {
-    return "Today • ${DateFormat('hh:mm a').format(date)}";
+    final difference = today.difference(analysis).inDays;
+
+    final loc = locale ?? context?.locale.languageCode;
+
+    final time = DateFormat('hh:mm a', loc).format(date);
+
+    if (difference == 0) {
+      return '${"date.today".tr()} • $time';
+    }
+
+    if (difference == 1) {
+      return '${"date.yesterday".tr()} • $time';
+    }
+
+    if (date.year == now.year) {
+      return DateFormat('dd MMM hh:mm a', loc).format(date);
+    }
+
+    return DateFormat('dd MMM yyyy hh:mm a', loc).format(date);
   }
 
-  if (difference == 1) {
-    return "Yesterday • ${DateFormat('hh:mm a').format(date)}";
+  static String formatDate(DateTime date, {String? locale}) {
+    return DateFormat('dd/MM/yyyy', locale).format(date);
   }
 
-  if (date.year == now.year) {
-    return DateFormat("dd MMM  hh:mm a").format(date);
+  static String formatDateTime(DateTime date, {String? locale}) {
+    return DateFormat('dd/MM/yyyy - hh:mm a', locale).format(date);
   }
 
-  return DateFormat("dd MMM yyyy   hh:mm a").format(date);
+  static String formatTime(DateTime date, {String? locale}) {
+    return DateFormat('hh:mm a', locale).format(date);
+  }
+
+  static String formatDayMonthYear(DateTime date, {String? locale}) {
+    return DateFormat('dd MMM yyyy', locale).format(date);
+  }
 }

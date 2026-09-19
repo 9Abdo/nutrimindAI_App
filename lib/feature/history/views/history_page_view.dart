@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/core/route/const_route.dart';
 import 'package:nutrimind/feature/home/cubit/home_cubit.dart';
@@ -29,7 +31,7 @@ class _HistoryPageViewState extends State<HistoryPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("History", style: AppStyle.appBarStyle),
+        title: Text("history.title".tr(), style: AppStyle.appBarStyle),
         centerTitle: true,
       ),
       body: BlocBuilder<HomeCubit, HomeState>(
@@ -44,12 +46,15 @@ class _HistoryPageViewState extends State<HistoryPageView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.history, size: 80.sp, color: Colors.grey),
+                    Icon(Icons.history, size: 80.sp, color: AppColor.greyColor),
                     SizedBox(height: 15.h),
-                    Text("No Analysis Yet", style: AppStyle.black17w600),
+                    Text(
+                      "history.no_history_title".tr(),
+                      style: AppStyle.black17w600,
+                    ),
                     SizedBox(height: 8.h),
                     Text(
-                      "Analyze your first meal\nto see it here.",
+                      "history.no_history_desc".tr(),
                       textAlign: TextAlign.center,
                       style: AppStyle.grey16,
                     ),

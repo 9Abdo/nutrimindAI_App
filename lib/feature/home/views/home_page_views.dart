@@ -1,13 +1,19 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/core/widgets/card_meal.dart';
+
 import 'package:nutrimind/feature/home/cubit/home_cubit.dart';
 import 'package:nutrimind/feature/home/cubit/home_state.dart';
 import 'package:nutrimind/feature/home/widget/card_chat.dart';
 import 'package:nutrimind/feature/home/widget/container_indicator.dart';
+
+import 'package:nutrimind/feature/user/cubit/user_cubit.dart';
+import 'package:nutrimind/feature/user/cubit/user_state.dart';
 
 class HomePageViews extends StatefulWidget {
   const HomePageViews({super.key});
@@ -17,12 +23,24 @@ class HomePageViews extends StatefulWidget {
 }
 
 class _HomePageViewsState extends State<HomePageViews> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  @override
+  void initState() {
+    context.read<UserCubit>().getUser();
+
+    final homeCubit = context.read<HomeCubit>();
+
+    homeCubit.loadMeals(uid);
+    homeCubit.loadTarget(uid);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.menu, color: AppColor.primaryColor, size: 30.sp),
-        title: Text("NutriMind", style: AppStyle.appBarStyle),
+        title: Text("app_name".tr(), style: AppStyle.appBarStyle),
         centerTitle: true,
         actions: [
           Icon(Icons.notifications, color: AppColor.primaryColor, size: 30.sp),
@@ -34,11 +52,24 @@ class _HomePageViewsState extends State<HomePageViews> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Hello, Abdelrhman", style: AppStyle.black24bold),
-              Text(
-                "Let's make healthier choices today!",
-                style: AppStyle.black16,
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state is UserLoading) {
+                    return CircularProgressIndicator();
+                  }
+                  if (state is UserSuccess) {
+                    final name = state.user.fullname;
+                    return Text(
+                      name.isNotEmpty
+                          ? "${"home.hello".tr()}, $name"
+                          : "home.hello".tr(),
+                      style: AppStyle.black24bold,
+                    );
+                  }
+                  return SizedBox.shrink();
+                },
               ),
+              Text("home.subtitle".tr(), style: AppStyle.black16),
               SizedBox(height: 10.h),
 
               /// Daily Statistics
@@ -52,6 +83,10 @@ class _HomePageViewsState extends State<HomePageViews> {
                     carbs: cubit.todayCarbs,
                     fat: cubit.todayFat,
                     meals: cubit.todayMeals,
+                    targetCalories: cubit.targetCalories,
+                    targetProtein: cubit.targetProtein,
+                    targetCarbs: cubit.targetCarbs,
+                    targetFat: cubit.targetFat,
                   );
                 },
               ),
@@ -63,8 +98,11 @@ class _HomePageViewsState extends State<HomePageViews> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Recent Analysis", style: AppStyle.black17w600),
-                  Text("See All", style: AppStyle.green16w500),
+                  Text(
+                    "home.recent_analysis".tr(),
+                    style: AppStyle.black17w600,
+                  ),
+                  Text("home.see_all".tr(), style: AppStyle.green16w500),
                 ],
               ),
 
@@ -83,16 +121,16 @@ class _HomePageViewsState extends State<HomePageViews> {
                             Icon(
                               Icons.history,
                               size: 70.sp,
-                              color: Colors.grey,
+                              color: AppColor.greyColor,
                             ),
                             SizedBox(height: 8.h),
                             Text(
-                              "No Analysis Yet",
+                              "home.no_analysis_title".tr(),
                               style: AppStyle.black17w600,
                             ),
                             SizedBox(height: 8.h),
                             Text(
-                              "Analyze your first meal\nto see it here.",
+                              "home.no_analysis_desc".tr(),
                               textAlign: TextAlign.center,
                               style: AppStyle.grey16,
                             ),
