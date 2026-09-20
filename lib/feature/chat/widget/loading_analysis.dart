@@ -6,7 +6,8 @@ import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/const_image.dart';
 
 class LoadingBubble extends StatelessWidget {
-  const LoadingBubble({super.key});
+  const LoadingBubble({super.key, required this.isAnalyzingMeal});
+  final bool isAnalyzingMeal;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class LoadingBubble extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(right: 8.w, top: 6.h),
+          padding: EdgeInsets.only(right: 8.w, top: 6.h, left: 8.w),
           child: CircleAvatar(
             radius: 18.r,
             backgroundColor: Colors.transparent,
@@ -41,7 +42,7 @@ class LoadingBubble extends StatelessWidget {
               Lottie.asset(ConstImage.loadingtyping, width: 50.w, height: 50.h),
               SizedBox(width: 10.w),
               Text(
-                "chat.analyzing".tr(),
+                isAnalyzingMeal ? "chat.analyzing".tr() : "chat.typing".tr(),
                 style: TextStyle(
                   fontSize: 15.sp,
                   color: Theme.of(context).colorScheme.onSurface,

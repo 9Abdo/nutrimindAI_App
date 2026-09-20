@@ -117,7 +117,9 @@ class _ProfilePageViewState extends State<ProfilePageView> {
                       ProfileTile(
                         icon: Icons.history,
                         title: "profile.analysis_history".tr(),
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(RoutName.historyName);
+                        },
                       ),
 
                       Divider(height: 1.h),

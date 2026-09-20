@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/feature/model/chat_message.dart';
 
 class BuildChatBubble extends StatelessWidget {
@@ -25,10 +26,7 @@ class BuildChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 6.h),
-      padding: EdgeInsets.symmetric(
-        horizontal: 12.w,
-        vertical: 10.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
       constraints: BoxConstraints(
         maxWidth: MediaQuery.of(context).size.width * .75,
       ),
@@ -37,12 +35,8 @@ class BuildChatBubble extends StatelessWidget {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20.r),
           topRight: Radius.circular(20.r),
-          bottomLeft: Radius.circular(
-            chatMessage.isUser ? 20.r : 4.r,
-          ),
-          bottomRight: Radius.circular(
-            chatMessage.isUser ? 4.r : 20.r,
-          ),
+          bottomLeft: Radius.circular(chatMessage.isUser ? 20.r : 4.r),
+          bottomRight: Radius.circular(chatMessage.isUser ? 4.r : 20.r),
         ),
         boxShadow: [
           BoxShadow(
@@ -62,12 +56,11 @@ class BuildChatBubble extends StatelessWidget {
                 chatMessage.image!,
                 height: 150.h,
                 width: double.infinity,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
 
-          if (chatMessage.image != null && hasText)
-            SizedBox(height: 8.h),
+          if (chatMessage.image != null && hasText) SizedBox(height: 8.h),
 
           if (hasText)
             Align(
@@ -93,10 +86,7 @@ class BuildChatBubble extends StatelessWidget {
             child: Text(
               DateFormat('hh:mm a').format(chatMessage.time),
               textDirection: ui.TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 11.sp,
-                color: Colors.grey,
-              ),
+              style: AppStyle.grey11,
             ),
           ),
         ],

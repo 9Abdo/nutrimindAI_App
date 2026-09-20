@@ -7,6 +7,7 @@ class RoutePath {
   static const String mealDatailPath = "/mealDatailPath";
   static const String emailVerification = "/emailVerification";
   static const String editProfilePath = "/editProfilePath";
+  static const String historyPath = "/historyPath";
 }
 
 class RoutName {
@@ -17,5 +18,6 @@ class RoutName {
   static const String splashName = "splashName";
   static const String mealDatailName = "mealDatailName";
   static const String emailVerification = "emailVerification";
-   static const String editProfileName = "/editProfileName";
+  static const String editProfileName = "editProfileName";
+  static const String historyName = "historyName";
 }

@@ -7,6 +7,7 @@ import 'package:nutrimind/feature/Auth/views/login_page_view.dart';
 import 'package:nutrimind/feature/Auth/views/register_page_view.dart';
 import 'package:nutrimind/feature/chat/views/chat_bot_view.dart';
 import 'package:nutrimind/feature/details_meal/views/meal_details_view.dart';
+import 'package:nutrimind/feature/history/views/history_page_view.dart';
 import 'package:nutrimind/feature/home/views/main_home_view.dart';
 import 'package:nutrimind/feature/model/home_model.dart';
 import 'package:nutrimind/feature/splash/splash_screen_view.dart';
@@ -62,6 +63,13 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         final meal = state.extra as HomeModel;
         return MealDetailsView(meal: meal);
+      },
+    ),
+    GoRoute(
+      path: RoutePath.historyPath,
+      name: RoutName.historyName,
+      builder: (context, state) {
+        return HistoryPageView();
       },
     ),
     GoRoute(

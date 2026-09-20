@@ -30,6 +30,8 @@ class ChatBotCubit extends Cubit<ChatBotState> {
 
   bool isTyping = false;
 
+  bool isAnalyzingMeal = false;
+
   void sendWelcomeMessage() {
     if (messages.isNotEmpty) return;
 
@@ -68,6 +70,8 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       );
 
       isTyping = true;
+      isAnalyzingMeal = false;
+
       emit(ChatBotLoading());
 
       final ChatBotModel response = await chatBotServices.sendMessage(message);
@@ -81,6 +85,7 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       emit(ChatBotSuccess(message: List.from(messages)));
     } catch (e) {
       isTyping = false;
+      isAnalyzingMeal = false;
 
       emit(ChatBotFailure(errMessage: e.toString()));
     }
@@ -110,6 +115,8 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       selectedImage = null;
 
       isTyping = true;
+      isAnalyzingMeal = true;
+
       emit(ChatBotLoading());
 
       final ChatBotModel response = await chatBotServices.sendImage(
@@ -124,6 +131,7 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       );
 
       isTyping = false;
+      isAnalyzingMeal = false;
 
       messages.add(
         ChatMessage(nutrition: response, isUser: false, time: DateTime.now()),
@@ -161,6 +169,7 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       emit(ChatBotSuccess(message: List.from(messages)));
     } catch (e) {
       isTyping = false;
+      isAnalyzingMeal = false;
 
       emit(ChatBotFailure(errMessage: e.toString()));
     }

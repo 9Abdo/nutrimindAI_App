@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/core/helper/showsnackbar.dart';
+import 'package:nutrimind/core/widgets/custom_text_field.dart';
 import 'package:nutrimind/feature/chat/cubit/chat_bot_cubit.dart';
 import 'package:nutrimind/feature/chat/cubit/chat_bot_state.dart';
 import 'package:nutrimind/feature/chat/widget/chat_buble.dart';
@@ -99,7 +100,9 @@ class _ChatBotViewState extends State<ChatBotView> {
 
                     itemBuilder: (context, index) {
                       if (cubit.isTyping && index == messages.length) {
-                        return const LoadingBubble();
+                        return LoadingBubble(
+                          isAnalyzingMeal: cubit.isAnalyzingMeal,
+                        );
                       }
 
                       return Padding(
@@ -128,64 +131,49 @@ class _ChatBotViewState extends State<ChatBotView> {
                           onPressed: cubit.removeSelectedImage,
                         ),
                       ),
-
-                    TextFormField(
+                    CustomTextField(
+                      hint: "chat.type_message".tr(),
                       controller: messageController,
+                      prefixicon: IconButton(
+                        onPressed: () {
+                          showBottomSheetimage(
+                            context,
+                            onTapCamera: () {
+                              Navigator.pop(context);
+                              cubit.pickImageFromCamera();
+                            },
+                            onTapGallery: () {
+                              Navigator.pop(context);
+                              cubit.pickImageFromGallery();
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.add, size: 26.sp),
+                      ),
+                      icon: IconButton(
+                        onPressed: state is ChatBotLoading
+                            ? null
+                            : () {
+                                final text = messageController.text.trim();
 
-                      decoration: InputDecoration(
-                        hintText: "chat.type_message".tr(),
+                                if (cubit.selectedImage != null) {
+                                  cubit.sendImage(
+                                    cubit.selectedImage!,
+                                    message: text,
+                                    language: context.locale.languageCode,
+                                  );
 
-                        prefixIcon: IconButton(
-                          icon: Icon(Icons.add, size: 26.sp),
-                          onPressed: () {
-                            showBottomSheetimage(
-                              context,
-                              onTapCamera: () {
-                                Navigator.pop(context);
-                                cubit.pickImageFromCamera();
+                                  cubit.removeSelectedImage();
+                                } else if (text.isNotEmpty) {
+                                  cubit.sendMessage(text);
+                                }
+
+                                messageController.clear();
                               },
-                              onTapGallery: () {
-                                Navigator.pop(context);
-                                cubit.pickImageFromGallery();
-                              },
-                            );
-                          },
-                        ),
-
-                        suffixIcon: IconButton(
-                          onPressed: state is ChatBotLoading
-                              ? null
-                              : () {
-                                  final text = messageController.text.trim();
-
-                                  if (cubit.selectedImage != null) {
-                                    cubit.sendImage(
-                                      cubit.selectedImage!,
-                                      message: text,
-                                      language: context.locale.languageCode,
-                                    );
-
-                                    cubit.removeSelectedImage();
-                                  } else if (text.isNotEmpty) {
-                                    cubit.sendMessage(text);
-                                  }
-
-                                  messageController.clear();
-                                },
-
-                          icon: Icon(
-                            Icons.send,
-                            color: AppColor.primaryColor,
-                            size: 26.sp,
-                          ),
-                        ),
-
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
+                        icon: Icon(
+                          Icons.send,
+                          color: AppColor.primaryColor,
+                          size: 26.sp,
                         ),
                       ),
                     ),

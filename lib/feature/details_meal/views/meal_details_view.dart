@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/core/helper/dateintil.dart';
+import 'package:nutrimind/core/widgets/image_widget.dart';
 import 'package:nutrimind/feature/details_meal/widget/info_card.dart';
 import 'package:nutrimind/feature/details_meal/widget/nutrition_row.dart';
 import 'package:nutrimind/feature/model/home_model.dart';
@@ -22,48 +23,11 @@ class MealDetailsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.r),
-              child: meal.image != null && meal.image!.isNotEmpty
-                  ? Image.network(
-                      meal.image!,
-                      width: double.infinity,
-                      height: 220.h,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          height: 220.h,
-                          width: double.infinity,
-                          color: Colors.grey.shade200,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 220.h,
-                          width: double.infinity,
-                          color: Colors.grey.shade200,
-                          child: Icon(
-                            Icons.fastfood,
-                            size: 90.sp,
-                            color: AppColor.greyColor,
-                          ),
-                        );
-                      },
-                    )
-                  : Container(
-                      height: 220.h,
-                      width: double.infinity,
-                      color: Colors.grey.shade200,
-                      child: Icon(
-                        Icons.fastfood,
-                        size: 90.sp,
-                        color: Colors.grey,
-                      ),
-                    ),
+            Imagewidget(
+              width: double.infinity,
+              height: 220.h,
+              image: meal.image!,
+              fit: BoxFit.fill,
             ),
 
             SizedBox(height: 20.h),

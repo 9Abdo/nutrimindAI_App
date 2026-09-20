@@ -116,7 +116,8 @@
     "calories": "Calories",
     "protein": "Protein",
     "carbs": "Carbs",
-    "fat": "Fat"
+    "fat": "Fat",
+    "typing":"Please at Moment..."
   },
 
   "details": {
