@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/const_image.dart';
-import 'package:nutrimind/feature/chat/widget/build_chat_bubble.dart';
-import 'package:nutrimind/feature/chat/widget/nutrition_message.dart';
-import 'package:nutrimind/feature/model/chat_message.dart';
+import 'package:nutrimind/feature/chat/presentation/widget/build_chat_bubble.dart';
+import 'package:nutrimind/feature/chat/presentation/widget/nutrition_message.dart';
+import 'package:nutrimind/feature/chat/data/models/chat_message.dart';
 
 class ChatBuble extends StatelessWidget {
   const ChatBuble({super.key, required this.chatMessage});
@@ -67,7 +67,7 @@ class ChatBuble extends StatelessWidget {
           child: chatMessage.nutrition != null
               ? NutritionMessage(
                   dateformat: chatMessage.time,
-                  chatBotModel: chatMessage.nutrition!,
+                  chatBotEntity: chatMessage.nutrition!,
                 )
               : BuildChatBubble(
                   bubbleColor: bubbleColor,

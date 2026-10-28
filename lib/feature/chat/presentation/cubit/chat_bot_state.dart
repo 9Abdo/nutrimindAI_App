@@ -1,6 +1,7 @@
 
 
-import 'package:nutrimind/feature/model/chat_message.dart';
+import '../../data/models/chat_message.dart';
+
 
 abstract class ChatBotState {}
 

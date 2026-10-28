@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
-import 'package:nutrimind/feature/chat/widget/nutrition_item.dart';
-import 'package:nutrimind/feature/model/chat_bot_model.dart';
+import 'package:nutrimind/feature/chat/domain/entitiy/chat_bot_entity.dart';
+import 'package:nutrimind/feature/chat/presentation/widget/nutrition_item.dart';
+
 
 class NutritionCard extends StatelessWidget {
-  const NutritionCard({super.key, required this.model});
+  const NutritionCard({super.key, required this.entity});
 
-  final ChatBotModel model;
+  final ChatBotEntity entity ;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class NutritionCard extends StatelessWidget {
               Icon(Icons.restaurant_menu, color: AppColor.primaryColor),
               SizedBox(width: 8.w),
               Expanded(
-                child: Text(model.foodName ?? "", style: AppStyle.font18bold),
+                child: Text(entity.foodName ?? "", style: AppStyle.font18bold),
               ),
             ],
           ),
@@ -44,25 +45,25 @@ class NutritionCard extends StatelessWidget {
           NutritionItem(
             icon: Icons.local_fire_department,
             title: "chat.calories".tr(),
-            value: "${model.calories} ${"home.kcal".tr()}",
+            value: "${entity.calories} ${"home.kcal".tr()}",
           ),
 
           NutritionItem(
             icon: Icons.fitness_center,
             title: "chat.protein".tr(),
-            value: "${model.protein} ${"home.g".tr()}",
+            value: "${entity.protein} ${"home.g".tr()}",
           ),
 
           NutritionItem(
             icon: Icons.rice_bowl,
             title: "chat.carbs".tr(),
-            value: "${model.carbs} ${"home.g".tr()}",
+            value: "${entity.carbs} ${"home.g".tr()}",
           ),
 
           NutritionItem(
             icon: Icons.opacity,
             title: "chat.fat".tr(),
-            value: "${model.fat} ${"home.g".tr()}",
+            value: "${entity.fat} ${"home.g".tr()}",
           ),
 
           SizedBox(height: 12.h),
@@ -74,7 +75,7 @@ class NutritionCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10.r),
             child: LinearProgressIndicator(
-              value: (model.healthScore ?? 0) / 10,
+              value: (entity.healthScore ?? 0) / 10,
               minHeight: 8.h,
               color: AppColor.primaryColor,
               backgroundColor: Colors.grey.shade300,
@@ -84,7 +85,7 @@ class NutritionCard extends StatelessWidget {
           SizedBox(height: 6.h),
 
           Text(
-            "${model.healthScore}/10",
+            "${entity.healthScore}/10",
             style: TextStyle(
               color: AppColor.primaryColor,
               fontWeight: FontWeight.bold,
@@ -100,7 +101,7 @@ class NutritionCard extends StatelessWidget {
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
-                  model.recommendation ?? "",
+                  entity.recommendation ?? "",
                   style: TextStyle(fontSize: 14.sp, height: 1.5),
                 ),
               ),

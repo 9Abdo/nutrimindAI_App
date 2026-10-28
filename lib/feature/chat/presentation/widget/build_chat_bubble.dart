@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
-import 'package:nutrimind/feature/model/chat_message.dart';
+import 'package:nutrimind/feature/chat/data/models/chat_message.dart';
 
 class BuildChatBubble extends StatelessWidget {
   const BuildChatBubble({

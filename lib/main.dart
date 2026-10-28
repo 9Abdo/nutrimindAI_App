@@ -5,14 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nutrimind/core/constant/const_api.dart';
-import 'package:nutrimind/core/route/app_route.dart';
-import 'package:nutrimind/core/theme/app_theme.dart';
-import 'package:nutrimind/core/theme/theme_cubit.dart';
-import 'package:nutrimind/feature/chat/cubit/chat_bot_cubit.dart';
-import 'package:nutrimind/feature/home/cubit/home_cubit.dart';
-import 'package:nutrimind/feature/services/chat_bot_services.dart';
-import 'package:nutrimind/feature/user/cubit/user_cubit.dart';
-import 'package:nutrimind/firebase_options.dart';
+import 'core/route/app_route.dart';
+import 'core/theme/app_theme.dart';
+import 'core/theme/theme_cubit.dart';
+import 'feature/chat/data/datasource/remote_chat_data_source.dart';
+import 'feature/chat/data/repo/chat_repo_implemention.dart';
+import 'feature/chat/domain/usecase/send_text_use_case.dart';
+import 'feature/chat/domain/usecase/sent_image_usecase.dart';
+import 'feature/chat/presentation/cubit/chat_bot_cubit.dart';
+import 'feature/home/cubit/home_cubit.dart';
+
+import 'feature/user/cubit/user_cubit.dart';
+import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -52,8 +56,17 @@ class MyApp extends StatelessWidget {
 
         BlocProvider<ChatBotCubit>(
           create: (context) => ChatBotCubit(
-            ChatBotServices(dio: Dio()),
             context.read<HomeCubit>(),
+            sendTextUseCase: SendTextUseCase(
+              chatMessageRepoAbstract: ChatRepoImplemention(
+                chatDataSourceAbstract: RemoteChatDataSource(dio: Dio()),
+              ),
+            ),
+            sentImageUsecase: SentImageUsecase(
+              chatMessageRepoAbstract: ChatRepoImplemention(
+                chatDataSourceAbstract: RemoteChatDataSource(dio: Dio()),
+              ),
+            ),
           ),
         ),
       ],

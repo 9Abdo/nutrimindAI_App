@@ -1,22 +1,15 @@
-class ChatBotModel {
-  final String? foodName;
-  final int? calories;
-  final int? protein;
-  final int? carbs;
-  final int? fat;
-  final int? healthScore;
-  final String? recommendation;
-  final String reply;
+import 'package:nutrimind/feature/chat/domain/entitiy/chat_bot_entity.dart';
 
+class ChatBotModel extends ChatBotEntity {
   ChatBotModel({
-    this.foodName,
-    this.calories,
-    this.protein,
-    this.carbs,
-    this.fat,
-    this.healthScore,
-    this.recommendation,
-    required this.reply,
+    super.foodName,
+    super.calories,
+    super.protein,
+    super.carbs,
+    super.fat,
+    super.healthScore,
+    super.recommendation,
+    required super.reply,
   });
 
   factory ChatBotModel.fromJson(Map<String, dynamic> json) {

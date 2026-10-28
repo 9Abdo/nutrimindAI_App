@@ -7,12 +7,12 @@ import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/core/helper/showsnackbar.dart';
 import 'package:nutrimind/core/widgets/custom_text_field.dart';
-import 'package:nutrimind/feature/chat/cubit/chat_bot_cubit.dart';
-import 'package:nutrimind/feature/chat/cubit/chat_bot_state.dart';
-import 'package:nutrimind/feature/chat/widget/chat_buble.dart';
-import 'package:nutrimind/feature/chat/widget/image_before_send.dart';
-import 'package:nutrimind/feature/chat/widget/loading_analysis.dart';
-import 'package:nutrimind/feature/chat/widget/showbottom.dart';
+import 'package:nutrimind/feature/chat/presentation/cubit/chat_bot_cubit.dart';
+import 'package:nutrimind/feature/chat/presentation/cubit/chat_bot_state.dart';
+import 'package:nutrimind/feature/chat/presentation/widget/chat_buble.dart';
+import 'package:nutrimind/feature/chat/presentation/widget/image_before_send.dart';
+import 'package:nutrimind/feature/chat/presentation/widget/loading_analysis.dart';
+import 'package:nutrimind/feature/chat/presentation/widget/showbottom.dart';
 
 class ChatBotView extends StatefulWidget {
   const ChatBotView({super.key});

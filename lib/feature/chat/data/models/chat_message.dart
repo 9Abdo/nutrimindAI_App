@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:nutrimind/feature/model/chat_bot_model.dart';
+import 'package:nutrimind/feature/chat/domain/entitiy/chat_bot_entity.dart';
 
 class ChatMessage {
   final String? text;
   final File? image;
-  final ChatBotModel? nutrition;
+  final ChatBotEntity? nutrition;
   final bool isUser;
   final DateTime time;
 

@@ -9,7 +9,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
 import 'package:nutrimind/core/constant/app_color.dart';
-import 'package:nutrimind/feature/chat/views/chat_bot_view.dart';
+import 'package:nutrimind/feature/chat/presentation/views/chat_bot_view.dart';
 import 'package:nutrimind/feature/history/views/history_page_view.dart';
 import 'package:nutrimind/feature/home/cubit/home_cubit.dart';
 import 'package:nutrimind/feature/home/views/home_page_views.dart';

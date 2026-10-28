@@ -8,7 +8,7 @@ import 'package:nutrimind/core/constant/app_color.dart';
 import 'package:nutrimind/core/constant/app_style.dart';
 import 'package:nutrimind/core/route/const_route.dart';
 import 'package:nutrimind/core/theme/theme_cubit.dart';
-import 'package:nutrimind/feature/chat/cubit/chat_bot_cubit.dart';
+import 'package:nutrimind/feature/chat/presentation/cubit/chat_bot_cubit.dart';
 import 'package:nutrimind/feature/home/cubit/home_cubit.dart';
 import 'package:nutrimind/feature/profile/widget/awesome_dialog.dart';
 import 'package:nutrimind/feature/profile/widget/dialog_language.dart';
