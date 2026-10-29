@@ -19,6 +19,7 @@ class MealDetailsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("details.title".tr())),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         padding: EdgeInsets.all(18.sp),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -5,155 +5,150 @@ import '../failure/failure_app.dart';
 
 class ErrorHandler {
   static FailureApp getErrorMessage(Object error) {
-    // Dio Errors
     if (error is DioException) {
-      switch (error.type) {
-        case DioExceptionType.connectionTimeout:
-          return FailureApp(failureMessage: 'Connection timeout');
-
-        case DioExceptionType.sendTimeout:
-          return FailureApp(failureMessage: 'Send timeout');
-
-        case DioExceptionType.receiveTimeout:
-          return FailureApp(failureMessage: 'Receive timeout');
-
-        case DioExceptionType.badResponse:
-          return FailureApp(
-            failureMessage: _handleStatusCode(error.response?.statusCode),
-          );
-
-        case DioExceptionType.cancel:
-          return FailureApp(failureMessage: 'Request cancelled');
-
-        case DioExceptionType.connectionError:
-          return FailureApp(failureMessage: 'No internet connection');
-
-        default:
-          return FailureApp(failureMessage: 'Something went wrong');
-      }
+      return FailureApp(failureMessage: _handleDioError(error));
     }
 
-    // Firebase Authentication Errors
     if (error is FirebaseAuthException) {
       return FailureApp(failureMessage: _handleFirebaseAuthError(error.code));
     }
 
-    // Cloud Firestore Errors
     if (error is FirebaseException && error.plugin == 'cloud_firestore') {
       return FailureApp(failureMessage: _handleFirestoreError(error.code));
     }
 
-    return FailureApp(failureMessage: 'Unexpected error');
+    return FailureApp(failureMessage: 'common.errors.unexpected_error');
   }
 
-  // Firebase Authentication
   static String _handleFirebaseAuthError(String code) {
     switch (code) {
       case 'invalid-email':
-        return 'Invalid email address';
+        return 'auth.errors.invalid_email';
 
       case 'user-not-found':
-        return 'No user found with this email';
+        return 'auth.errors.user_not_found';
 
       case 'wrong-password':
-        return 'Incorrect password';
-
       case 'invalid-credential':
-        return 'Invalid email or password';
+        return 'auth.errors.invalid_credential';
 
       case 'email-already-in-use':
-        return 'Email is already registered';
+        return 'auth.errors.email_already_in_use';
 
       case 'weak-password':
-        return 'Password is too weak';
+        return 'auth.errors.weak_password';
 
-      case 'user-disabled':
-        return 'This user account has been disabled';
-
-      case 'operation-not-allowed':
-        return 'This operation is not allowed';
-
-      case 'too-many-requests':
-        return 'Too many attempts. Please try again later';
-
-      case 'network-request-failed':
-        return 'No internet connection';
+      case 'email-not-verified':
+        return 'auth.errors.email_not_verified';
 
       case 'requires-recent-login':
-        return 'Please sign in again to continue';
+        return 'auth.errors.recent_login_required';
+
+      case 'login-failed':
+        return 'auth.errors.login_failed';
+
+      case 'signup-failed':
+        return 'auth.errors.signup_failed';
+
+      case 'too-many-requests':
+        return 'common.errors.too_many_requests';
+
+      case 'network-request-failed':
+        return 'common.errors.no_internet';
+
+      case 'user-disabled':
+      case 'operation-not-allowed':
+        return 'auth.errors.login_failed';
 
       default:
-        return 'Authentication failed';
+        return 'common.errors.unexpected_error';
     }
   }
 
-  // Cloud Firestore
+  static String _handleDioError(DioException error) {
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+        return 'common.errors.connection_timeout';
+
+      case DioExceptionType.sendTimeout:
+        return 'common.errors.send_timeout';
+
+      case DioExceptionType.receiveTimeout:
+        return 'common.errors.receive_timeout';
+
+      case DioExceptionType.badResponse:
+        return _handleStatusCode(error.response?.statusCode);
+
+      case DioExceptionType.cancel:
+        return 'common.errors.request_cancelled';
+
+      case DioExceptionType.connectionError:
+        return 'common.errors.no_internet';
+
+      default:
+        return 'common.errors.unexpected_error';
+    }
+  }
+
   static String _handleFirestoreError(String code) {
     switch (code) {
       case 'permission-denied':
-        return 'You do not have permission to perform this action';
+        return 'common.errors.permission_denied';
 
       case 'unavailable':
-        return 'Service is temporarily unavailable';
+        return 'common.errors.service_unavailable';
 
       case 'deadline-exceeded':
-        return 'The operation timed out';
+        return 'common.errors.request_timeout';
 
       case 'not-found':
-        return 'Requested document was not found';
+        return 'common.errors.not_found';
 
       case 'already-exists':
-        return 'Document already exists';
+        return 'common.errors.already_exists';
 
       case 'resource-exhausted':
-        return 'Service quota exceeded';
+        return 'common.errors.quota_exceeded';
 
       case 'unauthenticated':
-        return 'Please sign in first';
+        return 'auth.errors.user_not_logged_in';
 
       case 'cancelled':
-        return 'Operation cancelled';
+        return 'common.errors.request_cancelled';
 
       default:
-        return 'Database operation failed';
+        return 'common.errors.database_error';
     }
   }
 
-  // HTTP Status Codes
   static String _handleStatusCode(int? statusCode) {
     switch (statusCode) {
       case 400:
-        return 'Bad request';
+        return 'common.errors.bad_request';
 
       case 401:
-        return 'Unauthorized';
+        return 'common.errors.unauthorized';
 
       case 403:
-        return 'Forbidden';
+        return 'common.errors.permission_denied';
 
       case 404:
-        return 'Not found';
+        return 'common.errors.not_found';
 
       case 408:
-        return 'Request timeout';
+      case 504:
+        return 'common.errors.request_timeout';
 
       case 429:
-        return 'Too many requests';
+        return 'common.errors.too_many_requests';
 
       case 500:
-        return 'Internal server error';
-
       case 502:
-        return 'Bad gateway';
-
       case 503:
-        return 'Service unavailable';
-
-      case 504:
-        return 'Gateway timeout';
+        return 'common.errors.service_unavailable';
 
       default:
-        return 'Something went wrong';
+        return 'common.errors.unexpected_error';
     }
   }
 }

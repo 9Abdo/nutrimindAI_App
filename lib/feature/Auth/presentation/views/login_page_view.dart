@@ -11,9 +11,9 @@ import 'package:nutrimind/core/helper/showsnackbar.dart';
 import 'package:nutrimind/core/route/const_route.dart';
 import 'package:nutrimind/core/widgets/custom_button.dart';
 import 'package:nutrimind/core/widgets/custom_text_field.dart';
-import 'package:nutrimind/feature/Auth/cubit/auth_cubit.dart';
-import 'package:nutrimind/feature/Auth/cubit/auth_state.dart';
-import 'package:nutrimind/feature/Auth/widget/row_auth.dart';
+import 'package:nutrimind/feature/Auth/presentation/cubit/auth_cubit.dart';
+import 'package:nutrimind/feature/Auth/presentation/cubit/auth_state.dart';
+import 'package:nutrimind/feature/Auth/presentation/widget/row_auth.dart';
 
 class LoginPageView extends StatefulWidget {
   const LoginPageView({super.key});

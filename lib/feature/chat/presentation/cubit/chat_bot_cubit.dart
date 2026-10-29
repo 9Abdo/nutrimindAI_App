@@ -130,7 +130,7 @@ class ChatBotCubit extends Cubit<ChatBotState> {
     isTyping = true;
     isAnalyzingMeal = true;
 
-    //emit(ChatBotLoading());
+    emit(ChatBotLoading());
 
     final response = await sentImageUsecase.invoke(
       image,
@@ -154,14 +154,21 @@ class ChatBotCubit extends Cubit<ChatBotState> {
             time: DateTime.now(),
           ),
         );
+        if (responseResult.reply.trim().isNotEmpty == true) {
+          messages.add(
+            ChatMessage(
+              text: responseResult.reply,
+              isUser: false,
+              time: DateTime.now(),
+            ),
+          );
+        }
 
-      
         isTyping = false;
         isAnalyzingMeal = false;
 
         emit(ChatBotSuccess(message: List.from(messages)));
 
-        // 3. Save the meal in the background workflow
         try {
           final String imageUrl = await supabaseStorageService.uploadMealImage(
             image: image,

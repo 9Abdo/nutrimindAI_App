@@ -180,11 +180,30 @@
     "success": "Success",
     "loading": "Loading...",
     "retry": "Retry",
-    "save": "Save"
+    "save": "Save",
+ "errors": {
+  "unexpected_error": "An unexpected error occurred",
+  "no_internet": "No internet connection",
+  "connection_timeout": "Connection timed out",
+  "send_timeout": "Request sending timed out",
+  "receive_timeout": "Receiving data timed out",
+  "request_timeout": "Request timed out",
+  "request_cancelled": "Request was cancelled",
+  "too_many_requests": "Too many attempts. Please try again later",
+  "permission_denied": "You do not have permission to perform this action",
+  "service_unavailable": "Service is currently unavailable",
+  "not_found": "The requested item was not found",
+  "already_exists": "This item already exists",
+  "quota_exceeded": "Service quota exceeded",
+  "database_error": "A database error occurred",
+  "bad_request": "Invalid request",
+  "unauthorized": "You must sign in first"
+}
   },
     "date": {
     "today": "Today",
     "yesterday": "Yesterday"
   }
+ 
 }
 

@@ -180,13 +180,32 @@
     "success": "نجاح",
     "loading": "جاري التحميل...",
     "retry": "إعادة المحاولة",
-    "save": "حفظ"
+    "save": "حفظ",
+    "errors": {
+  "unexpected_error": "حدث خطأ غير متوقع",
+  "no_internet": "لا يوجد اتصال بالإنترنت",
+  "connection_timeout": "انتهت مهلة الاتصال",
+  "send_timeout": "انتهت مهلة إرسال الطلب",
+  "receive_timeout": "انتهت مهلة استقبال البيانات",
+  "request_timeout": "انتهت مهلة الطلب",
+  "request_cancelled": "تم إلغاء الطلب",
+  "too_many_requests": "محاولات كثيرة، حاول مرة أخرى لاحقًا",
+  "permission_denied": "ليس لديك صلاحية لتنفيذ هذا الإجراء",
+  "service_unavailable": "الخدمة غير متاحة حاليًا",
+  "not_found": "لم يتم العثور على المطلوب",
+  "already_exists": "هذا العنصر موجود بالفعل",
+  "quota_exceeded": "تم تجاوز الحد المسموح للخدمة",
+  "database_error": "حدث خطأ أثناء التعامل مع قاعدة البيانات",
+  "bad_request": "الطلب غير صحيح",
+  "unauthorized": "يجب تسجيل الدخول أولًا"
+}
   },
   
   "date": {
     "today": "اليوم",
     "yesterday": "أمس"
   }
+  
 
 }
 
