@@ -142,7 +142,6 @@ class ChatBotCubit extends Cubit<ChatBotState> {
       (failure) async {
         isTyping = false;
         isAnalyzingMeal = false;
-        log('API Failure: ${failure.failureMessage}');
 
         emit(ChatBotFailure(errMessage: failure.failureMessage));
       },
@@ -154,7 +153,8 @@ class ChatBotCubit extends Cubit<ChatBotState> {
             time: DateTime.now(),
           ),
         );
-        if (responseResult.reply.trim().isNotEmpty == true) {
+        if (message!.trim().isNotEmpty &&
+            responseResult.reply.trim().isNotEmpty) {
           messages.add(
             ChatMessage(
               text: responseResult.reply,
