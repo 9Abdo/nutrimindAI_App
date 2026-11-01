@@ -190,8 +190,8 @@ State management is performed with **Cubit** (a lightweight `Bloc`). UI layers r
 ### Clone the repository
 
 ```bash
-git clone https://github.com/9Abdo/nutrimind.git
-cd nutrimind
+https://github.com/9Abdo/nutrimindAI_App.git
+cd nutrimindAI_App
 ```
 
 ### Install dependencies
